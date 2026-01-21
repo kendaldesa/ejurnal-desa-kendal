@@ -1,0 +1,1328 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Jurnal Desa Kendal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script><!-- PWA Icons & Meta Tags -->
+  <link rel="icon" type="image/png" href="https://iili.io/fgp6BQj.png">
+  <link rel="apple-touch-icon" href="https://iili.io/fgp6BQj.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="https://iili.io/fgp6BQj.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://iili.io/fgp6BQj.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="https://iili.io/fgp6BQj.png"><!-- Android Chrome -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="E-Jurnal Desa"><!-- iOS Safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="E-Jurnal Desa"><!-- Theme Color -->
+  <meta name="theme-color" content="#1e3a5f">
+  <meta name="msapplication-TileColor" content="#1e3a5f">
+  <style>
+    body { 
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    .font-display { font-family: 'Poppins', sans-serif; }
+    .font-body { font-family: 'Poppins', sans-serif; }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    
+    .animate-fadeInUp { animation: fadeInUp 0.6s ease-out forwards; }
+    .animate-scaleIn { animation: scaleIn 0.5s ease-out forwards; }
+    .animate-slideInRight { animation: slideInRight 0.5s ease-out forwards; }
+    .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+    
+    .shimmer {
+      background: linear-gradient(90deg, #1e3a5f 25%, #2d4a6f 50%, #1e3a5f 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+    
+    .card-shadow {
+      box-shadow: 0 4px 20px rgba(30, 58, 95, 0.15);
+    }
+    
+    .nav-active {
+      background: linear-gradient(to bottom, rgba(30, 58, 95, 0.08), transparent);
+      color: #1e3a5f;
+      font-weight: 700;
+    }
+    
+    .nav-active span.absolute {
+      transform: scaleX(1) !important;
+    }
+    
+    .input-focus:focus {
+      box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.2);
+    }
+    
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body bg-gradient-to-br from-slate-50 to-blue-50">
+  <div id="app" class="h-full w-full overflow-auto"><!-- Login Page -->
+   <div id="loginPage" class="min-h-full w-full flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+     <div class="glass-effect rounded-2xl card-shadow p-8 animate-fadeInUp">
+      <div class="text-center mb-8"><img src="https://iili.io/fgp6BQj.png" alt="Logo Desa" class="w-24 h-24 mx-auto mb-4 rounded-full card-shadow object-cover" loading="lazy" onerror="this.style.display='none'">
+       <h1 id="loginTitle" class="font-display text-2xl font-bold text-[#1e3a5f]">E-JURNAL DESA KENDAL</h1>
+       <p class="text-slate-500 mt-2 text-sm">Sistem Pencatatan Kegiatan Perangkat Desa</p>
+      </div>
+      <div id="loginForm">
+       <div class="mb-4"><label for="username" class="block text-sm font-medium text-slate-700 mb-2">Username</label> <input type="text" id="username" class="w-full px-4 py-3 rounded-xl border border-slate-200 input-focus focus:outline-none focus:border-[#1e3a5f] transition-all" placeholder="Masukkan username">
+       </div>
+       <div class="mb-6"><label for="password" class="block text-sm font-medium text-slate-700 mb-2">Password</label> <input type="password" id="password" class="w-full px-4 py-3 rounded-xl border border-slate-200 input-focus focus:outline-none focus:border-[#1e3a5f] transition-all" placeholder="Masukkan password">
+       </div>
+       <div id="loginMessage" class="mb-4 hidden">
+        <div class="px-4 py-3 rounded-xl text-sm"></div>
+       </div><button onclick="handleLogin()" id="loginBtn" class="w-full py-3 bg-gradient-to-r from-[#1e3a5f] to-[#2d4a6f] text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+        </svg><span>Masuk</span> </button>
+      </div>
+     </div>
+     <p id="loginFooter" class="text-center text-slate-400 text-xs mt-6">Developed by Der Kaizer 2026</p>
+    </div>
+   </div><!-- Welcome Animation -->
+   <div id="welcomePage" class="hidden min-h-full w-full flex items-center justify-center p-4 bg-gradient-to-br from-[#1e3a5f] to-[#2d4a6f]">
+    <div class="text-center text-white">
+     <div class="animate-scaleIn">
+      <svg class="w-20 h-20 mx-auto mb-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+     </div>
+     <h2 class="font-display text-3xl font-bold mb-2 animate-fadeInUp">Selamat Datang</h2>
+     <p id="welcomeName" class="text-xl text-blue-200 animate-fadeInUp" style="animation-delay: 0.2s"></p>
+     <p class="text-blue-300 text-sm mt-2 animate-fadeInUp" style="animation-delay: 0.3s">Memuat dashboard...</p>
+    </div>
+   </div><!-- Main App -->
+   <div id="mainApp" class="hidden min-h-full w-full flex flex-col"><!-- Header -->
+    <header class="bg-gradient-to-r from-[#1e3a5f] to-[#2d4a6f] text-white p-4 card-shadow sticky top-0 z-50">
+     <div class="max-w-4xl mx-auto"><!-- Logo & Title Section (Centered) -->
+      <div class="text-center mb-4"><img src="https://iili.io/fgp6BQj.png" alt="Logo" class="w-16 h-16 mx-auto rounded-full border-2 border-white/50 object-cover mb-3 card-shadow" loading="lazy" onerror="this.style.display='none'">
+       <h1 id="headerTitle" class="font-display text-xl font-bold mb-1">E-JURNAL DESA KENDAL</h1>
+       <p class="text-blue-200 text-sm">Sistem Pencatatan Kegiatan Perangkat Desa</p>
+      </div><!-- User Info & Logout Button -->
+      <div class="flex items-center gap-3 bg-white/10 rounded-xl p-3"><img id="userPhoto" src="" alt="Foto" class="w-12 h-12 rounded-full border-2 border-white/50 object-cover flex-shrink-0" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23cbd5e1%22><path d=%22M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z%22/></svg>'">
+       <div class="flex-1 min-w-0">
+        <h2 id="userName" class="font-semibold text-base truncate"></h2>
+        <p id="userJabatan" class="text-blue-200 text-sm truncate"></p>
+       </div><button onclick="showLogoutConfirm()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 flex-shrink-0 shadow-lg hover:shadow-xl">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg><span>Keluar</span> </button>
+      </div><!-- Daily Quote -->
+      <div class="mt-3 bg-white/5 rounded-lg p-3 border-l-4 border-amber-400">
+       <p id="dailyQuote" class="text-sm text-blue-100 italic"></p>
+       <p id="quoteAuthor" class="text-xs text-blue-300 mt-1"></p>
+      </div>
+     </div>
+    </header><!-- Content Area -->
+    <main class="flex-1 p-4 pb-24">
+     <div class="max-w-4xl mx-auto"><!-- Statistik Page -->
+      <div id="pageStatistik" class="animate-fadeInUp">
+       <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-xl font-bold text-[#1e3a5f]">Dashboard Statistik</h3><button onclick="refreshData()" id="refreshBtnStats" class="px-4 py-2 bg-[#1e3a5f] text-white rounded-lg text-sm font-medium hover:bg-[#2d4a6f] transition-all flex items-center gap-2 shadow-lg hover:shadow-xl">
+         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+         </svg><span>Refresh</span> </button>
+       </div><!-- Stats Cards -->
+       <div id="statsCards" class="grid grid-cols-2 gap-3 mb-6">
+        <div class="bg-white rounded-xl p-4 card-shadow">
+         <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+           <svg class="w-5 h-5 text-[#1e3a5f]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+           </svg>
+          </div>
+          <div>
+           <p class="text-2xl font-bold text-[#1e3a5f]" id="statTotal">0</p>
+           <p class="text-xs text-slate-500">Total Kegiatan</p>
+          </div>
+         </div>
+        </div>
+        <div class="bg-white rounded-xl p-4 card-shadow">
+         <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+           <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+           </svg>
+          </div>
+          <div>
+           <p class="text-2xl font-bold text-green-600" id="statBulanIni">0</p>
+           <p class="text-xs text-slate-500">Bulan Ini</p>
+          </div>
+         </div>
+        </div>
+       </div><!-- Admin: User Cards -->
+       <div id="adminUserCards" class="hidden mb-6">
+        <h4 class="font-semibold text-[#1e3a5f] mb-3 flex items-center gap-2">
+         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+         </svg> Data Per Perangkat</h4>
+        <div id="userCardsContainer" class="grid gap-3"></div>
+       </div><!-- Recent Activities -->
+       <div class="bg-white rounded-xl card-shadow overflow-hidden">
+        <div class="p-4 border-b border-slate-100">
+         <h4 class="font-semibold text-[#1e3a5f] flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg> Kegiatan Terbaru</h4>
+        </div>
+        <div id="recentActivities" class="divide-y divide-slate-100 max-h-64 overflow-auto">
+         <div class="p-4 text-center text-slate-400 text-sm">
+          Memuat data...
+         </div>
+        </div>
+       </div>
+      </div><!-- Input Page -->
+      <div id="pageInput" class="hidden animate-fadeInUp">
+       <h3 class="font-display text-xl font-bold text-[#1e3a5f] mb-4">Input Kegiatan</h3>
+       <div class="bg-white rounded-xl card-shadow p-4">
+        <div class="space-y-4">
+         <div><label for="inputTanggal" class="block text-sm font-medium text-slate-700 mb-2">Tanggal</label> <input type="date" id="inputTanggal" class="w-full px-4 py-3 rounded-xl border border-slate-200 input-focus focus:outline-none focus:border-[#1e3a5f] transition-all">
+         </div>
+         <div><label for="inputLokasi" class="block text-sm font-medium text-slate-700 mb-2">Lokasi</label> <input type="text" id="inputLokasi" class="w-full px-4 py-3 rounded-xl border border-slate-200 input-focus focus:outline-none focus:border-[#1e3a5f] transition-all" placeholder="Masukkan lokasi kegiatan">
+         </div>
+         <div><label for="inputKegiatan" class="block text-sm font-medium text-slate-700 mb-2">Kegiatan</label> <input type="text" id="inputKegiatan" class="w-full px-4 py-3 rounded-xl border border-slate-200 input-focus focus:outline-none focus:border-[#1e3a5f] transition-all" placeholder="Masukkan nama kegiatan">
+         </div>
+         <div><label for="inputKeterangan" class="block text-sm font-medium text-slate-700 mb-2">Keterangan</label> <textarea id="inputKeterangan" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 input-focus focus:outline-none focus:border-[#1e3a5f] transition-all resize-none" placeholder="Keterangan tambahan (opsional)"></textarea>
+         </div>
+         <div id="inputMessage" class="hidden">
+          <div class="px-4 py-3 rounded-xl text-sm"></div>
+         </div><button onclick="submitJurnal()" id="submitBtn" class="w-full py-3 bg-gradient-to-r from-[#1e3a5f] to-[#2d4a6f] text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg><span>Simpan Kegiatan</span> </button>
+        </div>
+       </div>
+      </div><!-- Laporan Page -->
+      <div id="pageLaporan" class="hidden animate-fadeInUp">
+       <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-xl font-bold text-[#1e3a5f]">Laporan Kegiatan</h3><button onclick="refreshData()" id="refreshBtnLaporan" class="px-4 py-2 bg-[#1e3a5f] text-white rounded-lg text-sm font-medium hover:bg-[#2d4a6f] transition-all flex items-center gap-2 shadow-lg hover:shadow-xl">
+         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+         </svg><span>Refresh</span> </button>
+       </div><!-- Filters -->
+       <div class="bg-white rounded-xl card-shadow p-4 mb-4">
+        <div class="flex flex-wrap gap-3">
+         <div class="flex-1 min-w-[140px]"><label for="filterBulan" class="block text-xs font-medium text-slate-500 mb-1">Filter Bulan</label> <select id="filterBulan" onchange="filterLaporan()" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:border-[#1e3a5f]"> <option value="">Semua Bulan</option> </select>
+         </div>
+         <div id="adminJabatanFilter" class="hidden flex-1 min-w-[140px]"><label for="filterJabatan" class="block text-xs font-medium text-slate-500 mb-1">Filter Jabatan</label> <select id="filterJabatan" onchange="filterLaporan()" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:border-[#1e3a5f]"> <option value="">Semua Jabatan</option> </select>
+         </div>
+         <div class="flex items-end"><button onclick="exportPDF()" class="px-4 py-2 bg-[#1e3a5f] text-white rounded-lg text-sm font-medium hover:bg-[#2d4a6f] transition-all flex items-center gap-2">
+           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+           </svg><span>Unduh PDF</span> </button>
+         </div>
+        </div>
+       </div><!-- Laporan Table -->
+       <div class="bg-white rounded-xl card-shadow overflow-hidden">
+        <div class="overflow-x-auto">
+         <table class="w-full text-sm">
+          <thead class="bg-slate-50">
+           <tr>
+            <th class="px-4 py-3 text-left font-semibold text-slate-700">Tanggal</th>
+            <th class="px-4 py-3 text-left font-semibold text-slate-700">Kegiatan</th>
+            <th class="px-4 py-3 text-left font-semibold text-slate-700 hidden sm:table-cell">Lokasi</th>
+            <th class="px-4 py-3 text-center font-semibold text-slate-700">Aksi</th>
+           </tr>
+          </thead>
+          <tbody id="laporanTable" class="divide-y divide-slate-100">
+           <tr>
+            <td colspan="4" class="px-4 py-8 text-center text-slate-400">Memuat data...</td>
+           </tr>
+          </tbody>
+         </table>
+        </div>
+       </div>
+      </div>
+     </div>
+    </main><!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white card-shadow z-40 border-t-2 border-slate-100">
+     <div class="max-w-4xl mx-auto flex"><button onclick="showPage('statistik')" id="navStatistik" class="flex-1 py-4 text-center text-sm font-semibold transition-all duration-300 flex flex-col items-center justify-center gap-1 nav-active relative group">
+       <svg class="w-6 h-6 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+       </svg><span class="text-xs">Statistik</span> <span class="absolute top-0 left-0 right-0 h-1 bg-[#1e3a5f] transform scale-x-100 transition-transform duration-300"></span> </button> <button onclick="showPage('input')" id="navInput" class="flex-1 py-4 text-center text-sm font-semibold transition-all duration-300 flex flex-col items-center justify-center gap-1 text-slate-600 hover:bg-gradient-to-b hover:from-blue-50 hover:to-transparent relative group hidden">
+       <svg class="w-6 h-6 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+       </svg><span class="text-xs">Input</span> <span class="absolute top-0 left-0 right-0 h-1 bg-[#1e3a5f] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span> </button> <button onclick="showPage('laporan')" id="navLaporan" class="flex-1 py-4 text-center text-sm font-semibold transition-all duration-300 flex flex-col items-center justify-center gap-1 text-slate-600 hover:bg-gradient-to-b hover:from-blue-50 hover:to-transparent relative group">
+       <svg class="w-6 h-6 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+       </svg><span class="text-xs">Laporan</span> <span class="absolute top-0 left-0 right-0 h-1 bg-[#1e3a5f] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span> </button>
+     </div>
+    </nav>
+   </div><!-- Logout Confirmation Modal -->
+   <div id="logoutModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl card-shadow p-6 max-w-sm w-full animate-scaleIn">
+     <div class="text-center">
+      <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+       <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+       </svg>
+      </div>
+      <h3 class="font-display text-xl font-bold text-slate-800 mb-2">Konfirmasi Keluar</h3>
+      <p class="text-slate-500 text-sm mb-6">Apakah Anda yakin ingin keluar dari aplikasi?</p>
+      <div class="flex gap-3"><button onclick="hideLogoutConfirm()" class="flex-1 py-2 border border-slate-300 text-slate-600 rounded-xl font-medium hover:bg-slate-50 transition-all">Batal</button> <button onclick="handleLogout()" class="flex-1 py-2 bg-red-500 text-white rounded-xl font-medium hover:bg-red-600 transition-all">Ya, Keluar</button>
+      </div>
+     </div>
+    </div>
+   </div><!-- Edit Modal -->
+   <div id="editModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl card-shadow p-6 max-w-md w-full animate-scaleIn max-h-[90%] overflow-auto">
+     <h3 class="font-display text-xl font-bold text-[#1e3a5f] mb-4">Edit Kegiatan</h3>
+     <div class="space-y-4"><input type="hidden" id="editId">
+      <div><label for="editTanggal" class="block text-sm font-medium text-slate-700 mb-2">Tanggal</label> <input type="date" id="editTanggal" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1e3a5f]">
+      </div>
+      <div><label for="editLokasi" class="block text-sm font-medium text-slate-700 mb-2">Lokasi</label> <input type="text" id="editLokasi" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1e3a5f]">
+      </div>
+      <div><label for="editKegiatan" class="block text-sm font-medium text-slate-700 mb-2">Kegiatan</label> <input type="text" id="editKegiatan" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1e3a5f]">
+      </div>
+      <div><label for="editKeterangan" class="block text-sm font-medium text-slate-700 mb-2">Keterangan</label> <textarea id="editKeterangan" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1e3a5f] resize-none"></textarea>
+      </div>
+      <div id="editMessage" class="hidden">
+       <div class="px-4 py-3 rounded-xl text-sm"></div>
+      </div>
+      <div class="flex gap-3"><button onclick="hideEditModal()" class="flex-1 py-3 border border-slate-300 text-slate-600 rounded-xl font-medium hover:bg-slate-50 transition-all">Batal</button> <button onclick="updateJurnal()" id="updateBtn" class="flex-1 py-3 bg-[#1e3a5f] text-white rounded-xl font-medium hover:bg-[#2d4a6f] transition-all">Simpan</button>
+      </div>
+     </div>
+    </div>
+   </div><!-- Delete Confirmation Modal -->
+   <div id="deleteModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl card-shadow p-6 max-w-sm w-full animate-scaleIn">
+     <div class="text-center">
+      <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+       <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+       </svg>
+      </div>
+      <h3 class="font-display text-xl font-bold text-slate-800 mb-2">Hapus Kegiatan</h3>
+      <p class="text-slate-500 text-sm mb-6">Data yang dihapus tidak dapat dikembalikan. Lanjutkan?</p>
+      <div class="flex gap-3"><button onclick="hideDeleteModal()" class="flex-1 py-2 border border-slate-300 text-slate-600 rounded-xl font-medium hover:bg-slate-50 transition-all">Batal</button> <button onclick="confirmDelete()" id="confirmDeleteBtn" class="flex-1 py-2 bg-red-500 text-white rounded-xl font-medium hover:bg-red-600 transition-all">Hapus</button>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    // Config
+    const defaultConfig = {
+      app_title: 'E-JURNAL DESA KENDAL',
+      footer_text: 'Developed by Der Kaizer 2026'
+    };
+    
+    let config = { ...defaultConfig };
+    
+    // URLs
+    const USER_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQiewcxDs5jvDFmVEtJJ648_YzxxdXIX9TQ4gnB-YFhwKEu70rzRPBlSRzrBGIQ3dymRFZm_JfoaVDZ/pub?gid=2020714605&single=true&output=csv';
+    const DATA_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQiewcxDs5jvDFmVEtJJ648_YzxxdXIX9TQ4gnB-YFhwKEu70rzRPBlSRzrBGIQ3dymRFZm_JfoaVDZ/pub?gid=0&single=true&output=csv';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIHZPngpOtxuRU56eqvSFwAvWkoD2ExAPmZ8kJu-URltKGlGvxvC9qFjWNCGuPe1nN/exec';
+    
+    // State
+    let currentUser = null;
+    let users = [];
+    let allData = [];
+    let filteredData = [];
+    let deleteTargetId = null;
+    
+    // Daily Quotes
+    const quotes = [
+      { text: "Pendidikan adalah senjata paling mematikan di dunia, karena dengan pendidikan, Anda dapat mengubah dunia.", author: "Nelson Mandela" },
+      { text: "Kesuksesan bukanlah kunci kebahagiaan. Kebahagiaan adalah kunci kesuksesan.", author: "Albert Schweitzer" },
+      { text: "Satu-satunya cara untuk melakukan pekerjaan hebat adalah dengan mencintai apa yang Anda lakukan.", author: "Steve Jobs" },
+      { text: "Masa depan milik mereka yang percaya pada keindahan mimpi-mimpi mereka.", author: "Eleanor Roosevelt" },
+      { text: "Jangan pernah menyerah. Hal-hal hebat membutuhkan waktu.", author: "Unknown" },
+      { text: "Perubahan adalah hukum kehidupan. Mereka yang hanya melihat masa lalu atau masa kini pasti akan melewatkan masa depan.", author: "John F. Kennedy" },
+      { text: "Keberanian bukan berarti tidak takut, tapi kemampuan untuk maju meskipun ketakutan.", author: "Nelson Mandela" },
+      { text: "Hidup ini 10% tentang apa yang terjadi pada kita dan 90% tentang bagaimana kita bereaksi terhadapnya.", author: "Charles R. Swindoll" },
+      { text: "Jangan menunggu kesempatan. Ciptakanlah.", author: "George Bernard Shaw" },
+      { text: "Kegagalan adalah bumbu yang memberi rasa pada kesuksesan.", author: "Truman Capote" },
+      { text: "Orang yang tidak pernah membuat kesalahan adalah orang yang tidak pernah mencoba hal baru.", author: "Albert Einstein" },
+      { text: "Rahasia untuk maju adalah memulai.", author: "Mark Twain" },
+      { text: "Jangan biarkan ketakutan akan kekalahan menghalangi Anda untuk bermain.", author: "Babe Ruth" },
+      { text: "Waktu terbaik untuk menanam pohon adalah 20 tahun yang lalu. Waktu terbaik kedua adalah sekarang.", author: "Pepatah Tiongkok" },
+      { text: "Kualitas bukanlah tindakan, melainkan kebiasaan.", author: "Aristoteles" },
+      { text: "Satu hal yang lebih buruk dari pelatihan dan kehilangan karyawan adalah tidak melatih mereka dan mempertahankan mereka.", author: "Zig Ziglar" },
+      { text: "Jadilah perubahan yang ingin kamu lihat di dunia.", author: "Mahatma Gandhi" },
+      { text: "Hidup adalah apa yang terjadi ketika kamu sibuk membuat rencana lain.", author: "John Lennon" },
+      { text: "Kepuasan terletak pada usaha, bukan pada pencapaian.", author: "Mahatma Gandhi" },
+      { text: "Tidak ada jalan pintas menuju tempat yang layak dikunjungi.", author: "Beverly Sills" },
+      { text: "Mimpi besar dan berani gagal besar.", author: "Norman Vaughan" },
+      { text: "Hambatan adalah hal-hal menakutkan yang Anda lihat saat mengalihkan pandangan dari tujuan Anda.", author: "Henry Ford" },
+      { text: "Pikiran adalah segalanya. Apa yang Anda pikirkan, itulah yang Anda jadi.", author: "Buddha" },
+      { text: "Jangan biarkan kemarin mengambil terlalu banyak hari ini.", author: "Will Rogers" },
+      { text: "Anda tidak harus hebat untuk memulai, tetapi Anda harus memulai untuk menjadi hebat.", author: "Zig Ziglar" },
+      { text: "Kesalahan adalah bukti bahwa Anda sedang mencoba.", author: "Unknown" },
+      { text: "Investasi terbaik adalah investasi pada diri sendiri.", author: "Warren Buffett" },
+      { text: "Orang sukses melakukan apa yang orang gagal tidak mau lakukan.", author: "Jim Rohn" },
+      { text: "Kerja keras mengalahkan bakat ketika bakat tidak bekerja keras.", author: "Tim Notke" },
+      { text: "Bukan tentang seberapa keras Anda dipukul, tapi seberapa keras Anda bisa terpukul dan tetap maju.", author: "Rocky Balboa" },
+      { text: "Kehidupan dimulai di akhir zona nyaman Anda.", author: "Neale Donald Walsch" }
+    ];
+    
+    // Get daily quote based on day of year
+    function getDailyQuote() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), 0, 0);
+      const diff = now - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      const dayOfYear = Math.floor(diff / oneDay);
+      const index = dayOfYear % quotes.length;
+      return quotes[index];
+    }
+    
+    // Parse CSV with improved handling
+    function parseCSV(csv) {
+      const lines = csv.trim().split(/\r?\n/);
+      if (lines.length === 0) return [];
+      
+      const headerLine = lines[0];
+      const headers = parseCSVLine(headerLine);
+      
+      console.log('CSV Headers:', headers);
+      
+      const data = [];
+      
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        
+        const values = parseCSVLine(line);
+        
+        const obj = {};
+        headers.forEach((h, idx) => {
+          obj[h] = (values[idx] || '').trim();
+        });
+        
+        if (Object.values(obj).some(v => v !== '')) {
+          data.push(obj);
+        }
+      }
+      
+      console.log('Parsed data:', data);
+      return data;
+    }
+    
+    // Parse CSV line handling quotes
+    function parseCSVLine(line) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        
+        if (char === '"') {
+          if (inQuotes && line[i + 1] === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current.trim());
+      
+      return result;
+    }
+    
+    // Fetch users
+    async function fetchUsers() {
+      try {
+        const response = await fetch(USER_CSV_URL + '&t=' + Date.now());
+        const csv = await response.text();
+        console.log('Raw CSV:', csv.substring(0, 500));
+        users = parseCSV(csv);
+        
+        console.log('Users loaded:', users.length);
+        if (users.length > 0) {
+          console.log('Sample user:', users[0]);
+        }
+        
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    }
+    
+    // Fetch data
+    async function fetchData() {
+      try {
+        const response = await fetch(DATA_CSV_URL + '&t=' + Date.now());
+        const csv = await response.text();
+        allData = parseCSV(csv);
+        return allData;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        return [];
+      }
+    }
+    
+    // Login handler
+    async function handleLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const messageDiv = document.getElementById('loginMessage');
+      const messageContent = messageDiv.querySelector('div');
+      const loginBtn = document.getElementById('loginBtn');
+      
+      if (!username || !password) {
+        messageDiv.classList.remove('hidden');
+        messageContent.className = 'px-4 py-3 rounded-xl text-sm bg-amber-100 text-amber-700';
+        messageContent.textContent = 'Silakan masukkan username dan password';
+        return;
+      }
+      
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span>Memproses...</span>';
+      
+      await fetchUsers();
+      
+      // Find user
+      const user = users.find(u => {
+        const uName = (u.Username || '').trim();
+        const uPass = (u.Password || '').trim();
+        return uName === username && uPass === password;
+      });
+      
+      if (user) {
+        messageDiv.classList.remove('hidden');
+        messageContent.className = 'px-4 py-3 rounded-xl text-sm bg-green-100 text-green-700';
+        messageContent.textContent = 'Login berhasil! Mengalihkan...';
+        
+        currentUser = {
+          nama: user.Nama || user.nama || username,
+          username: user.Username || username,
+          jabatan: user.Jabatan || user.jabatan || '-',
+          foto: user.Foto || user.foto || '',
+          isAdmin: (user.Jabatan || user.jabatan || '').toLowerCase().includes('admin')
+        };
+        
+        setTimeout(() => {
+          showWelcome();
+        }, 1000);
+      } else {
+        messageDiv.classList.remove('hidden');
+        messageContent.className = 'px-4 py-3 rounded-xl text-sm bg-red-100 text-red-700';
+        messageContent.textContent = 'Username atau password salah!';
+        
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg><span>Masuk</span>';
+      }
+    }
+    
+    // Show welcome animation
+    function showWelcome() {
+      document.getElementById('loginPage').classList.add('hidden');
+      document.getElementById('welcomePage').classList.remove('hidden');
+      document.getElementById('welcomeName').textContent = currentUser.nama;
+      
+      setTimeout(() => {
+        document.getElementById('welcomePage').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        initializeMainApp();
+      }, 2500);
+    }
+    
+    // Initialize main app
+    async function initializeMainApp() {
+      // Set user info
+      document.getElementById('userName').textContent = currentUser.nama;
+      document.getElementById('userJabatan').textContent = currentUser.jabatan;
+      document.getElementById('userPhoto').src = currentUser.foto || '';
+      
+      // Set daily quote
+      const quote = getDailyQuote();
+      document.getElementById('dailyQuote').textContent = `"${quote.text}"`;
+      document.getElementById('quoteAuthor').textContent = `— ${quote.author}`;
+      
+      // Set today's date
+      document.getElementById('inputTanggal').valueAsDate = new Date();
+      
+      // Show admin features
+      if (currentUser.isAdmin) {
+        document.getElementById('adminUserCards').classList.remove('hidden');
+        document.getElementById('adminJabatanFilter').classList.remove('hidden');
+        document.getElementById('navInput').classList.add('hidden');
+        document.getElementById('statsCards').classList.add('hidden');
+      } else {
+        document.getElementById('navInput').classList.remove('hidden');
+        document.getElementById('statsCards').classList.remove('hidden');
+      }
+      
+      // Load data
+      await loadData();
+    }
+    
+    // Load data
+    async function loadData() {
+      await fetchData();
+      updateStatistics();
+      updateRecentActivities();
+      updateLaporanTable();
+      populateFilters();
+      
+      if (currentUser.isAdmin) {
+        updateAdminUserCards();
+      }
+    }
+    
+    // Refresh data dengan animasi
+    async function refreshData() {
+      const btn1 = document.getElementById('refreshBtnStats');
+      const btn2 = document.getElementById('refreshBtnLaporan');
+      const activeBtn = btn1 && !btn1.disabled ? btn1 : btn2;
+      
+      if (activeBtn) {
+        const originalHTML = activeBtn.innerHTML;
+        activeBtn.disabled = true;
+        activeBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span>Memuat...</span>';
+        
+        await loadData();
+        
+        setTimeout(() => {
+          activeBtn.disabled = false;
+          activeBtn.innerHTML = originalHTML;
+        }, 500);
+      } else {
+        await loadData();
+      }
+    }
+    
+    // Update statistics
+    function updateStatistics() {
+      let userData = currentUser.isAdmin ? allData : allData.filter(d => d.Nama === currentUser.nama);
+      
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+      
+      const bulanIni = userData.filter(d => {
+        if (!d.Tanggal) return false;
+        const date = new Date(d.Tanggal);
+        return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+      });
+      
+      document.getElementById('statTotal').textContent = userData.length;
+      document.getElementById('statBulanIni').textContent = bulanIni.length;
+    }
+    
+    // Update admin user cards
+    function updateAdminUserCards() {
+      const container = document.getElementById('userCardsContainer');
+      const userStats = {};
+      
+      allData.forEach(d => {
+        if (!userStats[d.Nama]) {
+          userStats[d.Nama] = { count: 0, jabatan: d.Jabatan || '-' };
+        }
+        userStats[d.Nama].count++;
+      });
+      
+      // Also add users with no data
+      users.forEach(u => {
+        if (!userStats[u.Nama]) {
+          userStats[u.Nama] = { count: 0, jabatan: u.Jabatan || '-' };
+        }
+      });
+      
+      let html = '';
+      // Use users array order (spreadsheet order) instead of sorting alphabetically
+      users.forEach(user => {
+        const nama = user.Nama;
+        const stat = userStats[nama];
+        if (!stat) return;
+        
+        const foto = user.Foto || '';
+        
+        html += `
+          <div class="bg-gradient-to-r from-slate-50 to-blue-50 rounded-xl p-3 flex items-center gap-3 border border-slate-100">
+            <img src="${foto}" loading="lazy" alt="${nama}" class="w-12 h-12 rounded-full object-cover border-2 border-white card-shadow" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23cbd5e1%22><path d=%22M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z%22/></svg>'">
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-slate-800 truncate">${nama}</p>
+              <p class="text-xs text-slate-500 truncate">${stat.jabatan}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-xl font-bold text-[#1e3a5f]">${stat.count}</p>
+              <p class="text-xs text-slate-400">kegiatan</p>
+            </div>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html || '<p class="text-slate-400 text-sm text-center py-4">Belum ada data</p>';
+    }
+    
+    // Update recent activities
+    function updateRecentActivities() {
+      const container = document.getElementById('recentActivities');
+      let userData = currentUser.isAdmin ? allData : allData.filter(d => d.Nama === currentUser.nama);
+      
+      // Sort by date descending
+      userData = userData.sort((a, b) => new Date(b.Tanggal) - new Date(a.Tanggal)).slice(0, 5);
+      
+      if (userData.length === 0) {
+        container.innerHTML = '<div class="p-4 text-center text-slate-400 text-sm">Belum ada kegiatan tercatat</div>';
+        return;
+      }
+      
+      let html = '';
+      userData.forEach(d => {
+        const date = d.Tanggal ? new Date(d.Tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+        html += `
+          <div class="p-4 hover:bg-slate-50 transition-colors">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-[#1e3a5f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="font-medium text-slate-800 truncate">${d.Kegiatan || '-'}</p>
+                <p class="text-xs text-slate-500">${d.Lokasi || '-'}</p>
+                ${currentUser.isAdmin ? `<p class="text-xs text-blue-600 mt-1">${d.Nama || '-'}</p>` : ''}
+              </div>
+              <span class="text-xs text-slate-400 flex-shrink-0">${date}</span>
+            </div>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html;
+    }
+    
+    // Populate filters
+    function populateFilters() {
+      const bulanSelect = document.getElementById('filterBulan');
+      const jabatanSelect = document.getElementById('filterJabatan');
+      
+      // Bulan filter
+      const months = new Set();
+      allData.forEach(d => {
+        if (d.Tanggal) {
+          const date = new Date(d.Tanggal);
+          months.add(`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`);
+        }
+      });
+      
+      const sortedMonths = Array.from(months).sort().reverse();
+      let bulanHtml = '<option value="">Semua Bulan</option>';
+      sortedMonths.forEach(m => {
+        const [year, month] = m.split('-');
+        const monthName = new Date(year, month - 1).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+        bulanHtml += `<option value="${m}">${monthName}</option>`;
+      });
+      bulanSelect.innerHTML = bulanHtml;
+      
+      // Jabatan filter (admin only)
+      if (currentUser.isAdmin) {
+        const jabatans = new Set();
+        users.forEach(u => {
+          if (u.Jabatan) jabatans.add(u.Jabatan);
+        });
+        
+        let jabatanHtml = '<option value="">Semua Jabatan</option>';
+        Array.from(jabatans).sort().forEach(j => {
+          jabatanHtml += `<option value="${j}">${j}</option>`;
+        });
+        jabatanSelect.innerHTML = jabatanHtml;
+      }
+    }
+    
+    // Filter laporan
+    function filterLaporan() {
+      updateLaporanTable();
+    }
+    
+    // Update laporan table
+    function updateLaporanTable() {
+      const tbody = document.getElementById('laporanTable');
+      const filterBulan = document.getElementById('filterBulan').value;
+      const filterJabatan = document.getElementById('filterJabatan')?.value || '';
+      
+      let userData = currentUser.isAdmin ? allData : allData.filter(d => d.Nama === currentUser.nama);
+      
+      // Apply filters
+      if (filterBulan) {
+        userData = userData.filter(d => {
+          if (!d.Tanggal) return false;
+          const date = new Date(d.Tanggal);
+          const ym = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+          return ym === filterBulan;
+        });
+      }
+      
+      if (filterJabatan && currentUser.isAdmin) {
+        userData = userData.filter(d => d.Jabatan === filterJabatan);
+      }
+      
+      // Sort by date descending
+      userData = userData.sort((a, b) => new Date(b.Tanggal) - new Date(a.Tanggal));
+      filteredData = userData;
+      
+      if (userData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="px-4 py-8 text-center text-slate-400">Tidak ada data</td></tr>';
+        return;
+      }
+      
+      let html = '';
+      userData.forEach((d, idx) => {
+        const date = d.Tanggal ? new Date(d.Tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+        html += `
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="px-4 py-3">
+              <span class="text-sm text-slate-800">${date}</span>
+              ${currentUser.isAdmin ? `<p class="text-xs text-blue-600">${d.Nama || '-'}</p>` : ''}
+            </td>
+            <td class="px-4 py-3">
+              <p class="font-medium text-slate-800 text-sm">${d.Kegiatan || '-'}</p>
+              <p class="text-xs text-slate-500 sm:hidden">${d.Lokasi || '-'}</p>
+            </td>
+            <td class="px-4 py-3 hidden sm:table-cell text-sm text-slate-600">${d.Lokasi || '-'}</td>
+            <td class="px-4 py-3">
+              <div class="flex items-center justify-center gap-1">
+                <button onclick="showEditModal(${idx})" class="p-2 text-slate-400 hover:text-[#1e3a5f] hover:bg-blue-50 rounded-lg transition-all" title="Edit">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                </button>
+                <button onclick="showDeleteModal('${d.ID || idx}')" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" title="Hapus">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+      
+      tbody.innerHTML = html;
+    }
+    
+    // Show page
+    function showPage(page) {
+      // Hide all pages
+      document.getElementById('pageStatistik').classList.add('hidden');
+      document.getElementById('pageInput').classList.add('hidden');
+      document.getElementById('pageLaporan').classList.add('hidden');
+      
+      // Reset nav styles
+      ['navStatistik', 'navInput', 'navLaporan'].forEach(navId => {
+        const nav = document.getElementById(navId);
+        nav.classList.remove('nav-active');
+        nav.classList.add('text-slate-600');
+        nav.querySelector('span.absolute').style.transform = 'scaleX(0)';
+      });
+      
+      // Show selected page
+      const pageId = `page${page.charAt(0).toUpperCase() + page.slice(1)}`;
+      const navId = `nav${page.charAt(0).toUpperCase() + page.slice(1)}`;
+      
+      document.getElementById(pageId).classList.remove('hidden');
+      document.getElementById(navId).classList.add('nav-active');
+      document.getElementById(navId).classList.remove('text-slate-600');
+      document.getElementById(navId).querySelector('span.absolute').style.transform = 'scaleX(1)';
+    }
+    
+    // Submit jurnal
+    async function submitJurnal() {
+      const tanggal = document.getElementById('inputTanggal').value;
+      const lokasi = document.getElementById('inputLokasi').value.trim();
+      const kegiatan = document.getElementById('inputKegiatan').value.trim();
+      const keterangan = document.getElementById('inputKeterangan').value.trim();
+      const messageDiv = document.getElementById('inputMessage');
+      const messageContent = messageDiv.querySelector('div');
+      const submitBtn = document.getElementById('submitBtn');
+      
+      if (!tanggal || !lokasi || !kegiatan) {
+        messageDiv.classList.remove('hidden');
+        messageContent.className = 'px-4 py-3 rounded-xl text-sm bg-amber-100 text-amber-700';
+        messageContent.textContent = 'Mohon lengkapi tanggal, lokasi, dan kegiatan';
+        return;
+      }
+      
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span>Menyimpan...</span>';
+      
+      try {
+        // Kirim dengan format URLSearchParams
+        const params = new URLSearchParams();
+        params.append('action', 'create');
+        params.append('Nama', currentUser.nama);
+        params.append('Jabatan', currentUser.jabatan);
+        params.append('Tanggal', tanggal);
+        params.append('Lokasi', lokasi);
+        params.append('Kegiatan', kegiatan);
+        params.append('Keterangan', keterangan);
+        
+        console.log('Sending data:', {
+          action: 'create',
+          Nama: currentUser.nama,
+          Jabatan: currentUser.jabatan,
+          Tanggal: tanggal,
+          Lokasi: lokasi,
+          Kegiatan: kegiatan,
+          Keterangan: keterangan
+        });
+        
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: params.toString()
+        });
+        
+        console.log('Response received');
+        
+        messageDiv.classList.remove('hidden');
+        messageContent.className = 'px-4 py-3 rounded-xl text-sm bg-green-100 text-green-700';
+        messageContent.textContent = 'Kegiatan berhasil disimpan!';
+        
+        // Reset form
+        document.getElementById('inputLokasi').value = '';
+        document.getElementById('inputKegiatan').value = '';
+        document.getElementById('inputKeterangan').value = '';
+        document.getElementById('inputTanggal').valueAsDate = new Date();
+        
+        // Reload data after a delay
+        setTimeout(async () => {
+          await refreshData();
+          messageDiv.classList.add('hidden');
+        }, 1500);
+        
+      } catch (error) {
+        console.error('Submit error:', error);
+        messageDiv.classList.remove('hidden');
+        messageContent.className = 'px-4 py-3 rounded-xl text-sm bg-red-100 text-red-700';
+        messageContent.textContent = 'Gagal menyimpan. Silakan coba lagi.';
+      }
+      
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Simpan Kegiatan</span>';
+    }
+    
+    // Show edit modal
+    function showEditModal(idx) {
+      const data = filteredData[idx];
+      if (!data) return;
+      
+      document.getElementById('editId').value = data.ID || idx;
+      document.getElementById('editTanggal').value = data.Tanggal || '';
+      document.getElementById('editLokasi').value = data.Lokasi || '';
+      document.getElementById('editKegiatan').value = data.Kegiatan || '';
+      document.getElementById('editKeterangan').value = data.Keterangan || '';
+      document.getElementById('editMessage').classList.add('hidden');
+      document.getElementById('editModal').classList.remove('hidden');
+    }
+    
+    // Hide edit modal
+    function hideEditModal() {
+      document.getElementById('editModal').classList.add('hidden');
+    }
+    
+    // Update jurnal
+    async function updateJurnal() {
+      const id = document.getElementById('editId').value;
+      const tanggal = document.getElementById('editTanggal').value;
+      const lokasi = document.getElementById('editLokasi').value.trim();
+      const kegiatan = document.getElementById('editKegiatan').value.trim();
+      const keterangan = document.getElementById('editKeterangan').value.trim();
+      const messageDiv = document.getElementById('editMessage');
+      const messageContent = messageDiv.querySelector('div');
+      const updateBtn = document.getElementById('updateBtn');
+      
+      if (!tanggal || !lokasi || !kegiatan) {
+        messageDiv.classList.remove('hidden');
+        messageContent.className = 'px-4 py-3 rounded-xl text-sm bg-amber-100 text-amber-700';
+        messageContent.textContent = 'Mohon lengkapi semua field';
+        return;
+      }
+      
+      updateBtn.disabled = true;
+      updateBtn.textContent = 'Menyimpan...';
+      
+      try {
+        const formData = new FormData();
+        formData.append('action', 'update');
+        formData.append('ID', id);
+        formData.append('Nama', currentUser.nama);
+        formData.append('Jabatan', currentUser.jabatan);
+        formData.append('Tanggal', tanggal);
+        formData.append('Lokasi', lokasi);
+        formData.append('Kegiatan', kegiatan);
+        formData.append('Keterangan', keterangan);
+        
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: formData
+        });
+        
+        hideEditModal();
+        await loadData();
+        
+      } catch (error) {
+        messageDiv.classList.remove('hidden');
+        messageContent.className = 'px-4 py-3 rounded-xl text-sm bg-red-100 text-red-700';
+        messageContent.textContent = 'Gagal memperbarui. Silakan coba lagi.';
+      }
+      
+      updateBtn.disabled = false;
+      updateBtn.textContent = 'Simpan';
+    }
+    
+    // Show delete modal
+    function showDeleteModal(id) {
+      deleteTargetId = id;
+      document.getElementById('deleteModal').classList.remove('hidden');
+    }
+    
+    // Hide delete modal
+    function hideDeleteModal() {
+      document.getElementById('deleteModal').classList.add('hidden');
+      deleteTargetId = null;
+    }
+    
+    // Confirm delete
+    async function confirmDelete() {
+      if (!deleteTargetId) return;
+      
+      const confirmBtn = document.getElementById('confirmDeleteBtn');
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = 'Menghapus...';
+      
+      try {
+        const formData = new FormData();
+        formData.append('action', 'delete');
+        formData.append('ID', deleteTargetId);
+        
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: formData
+        });
+        
+        hideDeleteModal();
+        await loadData();
+        
+      } catch (error) {
+        console.error('Delete error:', error);
+      }
+      
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = 'Hapus';
+    }
+    
+    // Export PDF - Download directly
+    async function exportPDF() {
+      // Show loading indicator
+      const loadingMessage = showPersistentMessage('Sedang menyiapkan PDF...', 'info');
+      
+      try {
+        // Wait a bit for any pending operations
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Validasi data
+        if (!filteredData || filteredData.length === 0) {
+          loadingMessage.remove();
+          showInlineMessage('Tidak ada data untuk diunduh. Silakan tambah data terlebih dahulu.', 'warning');
+          return;
+        }
+        
+        // Cek apakah jsPDF sudah tersedia - coba beberapa cara akses
+        let jsPDF;
+        if (window.jspdf && window.jspdf.jsPDF) {
+          jsPDF = window.jspdf.jsPDF;
+        } else if (window.jsPDF) {
+          jsPDF = window.jsPDF;
+        } else {
+          loadingMessage.remove();
+          showInlineMessage('Library PDF belum siap. Silakan muat ulang halaman.', 'warning');
+          console.error('jsPDF library not loaded. window.jspdf:', window.jspdf, 'window.jsPDF:', window.jsPDF);
+          return;
+        }
+        
+        console.log('Creating PDF with', filteredData.length, 'records');
+        
+        // Create PDF document
+        const doc = new jsPDF({
+          orientation: 'p',
+          unit: 'mm',
+          format: 'a4'
+        });
+        
+        // Check if autoTable is available
+        if (typeof doc.autoTable === 'undefined') {
+          loadingMessage.remove();
+          showInlineMessage('Plugin tabel PDF belum siap. Silakan muat ulang halaman.', 'warning');
+          console.error('autoTable plugin not loaded');
+          return;
+        }
+        
+        const filterBulan = document.getElementById('filterBulan').value;
+        let bulanText = 'Semua Periode';
+        if (filterBulan) {
+          const [year, month] = filterBulan.split('-');
+          bulanText = new Date(year, month - 1).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+        }
+        
+        // Header
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.text('LAPORAN KEGIATAN PERANGKAT DESA', 105, 20, { align: 'center' });
+        
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.text('DESA KENDAL', 105, 28, { align: 'center' });
+        
+        doc.setFontSize(10);
+        doc.text(`Periode: ${bulanText}`, 105, 36, { align: 'center' });
+        
+        if (!currentUser.isAdmin) {
+          doc.text(`Nama: ${currentUser.nama}`, 105, 42, { align: 'center' });
+          doc.text(`Jabatan: ${currentUser.jabatan}`, 105, 48, { align: 'center' });
+        }
+        
+        // Line
+        doc.setLineWidth(0.5);
+        doc.line(14, currentUser.isAdmin ? 42 : 54, 196, currentUser.isAdmin ? 42 : 54);
+        
+        // Table
+        const tableData = filteredData.map(d => {
+          const date = d.Tanggal ? new Date(d.Tanggal).toLocaleDateString('id-ID') : '-';
+          if (currentUser.isAdmin) {
+            return [date, d.Nama || '-', d.Kegiatan || '-', d.Lokasi || '-', d.Keterangan || '-'];
+          }
+          return [date, d.Kegiatan || '-', d.Lokasi || '-', d.Keterangan || '-'];
+        });
+        
+        const headers = currentUser.isAdmin
+          ? [['Tanggal', 'Nama', 'Kegiatan', 'Lokasi', 'Keterangan']]
+          : [['Tanggal', 'Kegiatan', 'Lokasi', 'Keterangan']];
+        
+        console.log('Generating table with', tableData.length, 'rows');
+        
+        doc.autoTable({
+          head: headers,
+          body: tableData,
+          startY: currentUser.isAdmin ? 46 : 58,
+          styles: { fontSize: 9, cellPadding: 2 },
+          headStyles: { fillColor: [30, 58, 95], textColor: 255 },
+          alternateRowStyles: { fillColor: [245, 247, 250] },
+          margin: { left: 14, right: 14 }
+        });
+        
+        // Footer
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+          doc.setPage(i);
+          doc.setFontSize(8);
+          doc.setTextColor(128);
+          doc.text(`Halaman ${i} dari ${pageCount}`, 105, 290, { align: 'center' });
+          doc.text(config.footer_text, 105, 295, { align: 'center' });
+        }
+        
+        // Generate filename with current date
+        const now = new Date();
+        let filename = 'Laporan-Kegiatan';
+        
+        if (filterBulan) {
+          const [year, month] = filterBulan.split('-');
+          const monthName = new Date(year, month - 1).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }).replace(/\s/g, '-');
+          filename += `-${monthName}`;
+        } else {
+          const dateStr = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
+          filename += `-${dateStr}`;
+        }
+        
+        if (!currentUser.isAdmin) {
+          filename += `-${currentUser.nama.replace(/\s/g, '-')}`;
+        }
+        
+        filename += '.pdf';
+        
+        console.log('Attempting to save PDF as:', filename);
+        
+        // Try multiple download methods
+        try {
+          // Method 1: Direct save
+          doc.save(filename);
+          console.log('PDF save() called successfully');
+        } catch (saveError) {
+          console.error('doc.save() failed, trying alternative method:', saveError);
+          
+          // Method 2: Manual blob download
+          const pdfBlob = doc.output('blob');
+          const url = URL.createObjectURL(pdfBlob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = filename;
+          link.style.display = 'none';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setTimeout(() => URL.revokeObjectURL(url), 100);
+          console.log('PDF downloaded via blob method');
+        }
+        
+        loadingMessage.remove();
+        showInlineMessage('✓ PDF berhasil diunduh: ' + filename, 'success');
+        
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        console.error('Error details:', error.stack);
+        loadingMessage.remove();
+        showInlineMessage('Gagal membuat PDF. Coba muat ulang halaman. Error: ' + error.message, 'error');
+      }
+    }
+    
+    // Helper to show persistent message
+    function showPersistentMessage(message, type = 'info') {
+      const colors = {
+        success: 'bg-green-100 text-green-700 border-green-300',
+        error: 'bg-red-100 text-red-700 border-red-300',
+        warning: 'bg-amber-100 text-amber-700 border-amber-300',
+        info: 'bg-blue-100 text-blue-700 border-blue-300'
+      };
+      
+      const messageEl = document.createElement('div');
+      messageEl.className = `fixed top-20 right-4 left-4 sm:left-auto sm:w-96 px-4 py-3 rounded-xl text-sm border-2 ${colors[type]} z-50 animate-slideInRight shadow-lg flex items-center gap-2`;
+      messageEl.innerHTML = `
+        <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>${message}</span>
+      `;
+      
+      document.body.appendChild(messageEl);
+      return messageEl;
+    }
+    
+    // Helper function to show inline messages
+    function showInlineMessage(message, type = 'info') {
+      const colors = {
+        success: 'bg-green-100 text-green-700 border-green-300',
+        error: 'bg-red-100 text-red-700 border-red-300',
+        warning: 'bg-amber-100 text-amber-700 border-amber-300',
+        info: 'bg-blue-100 text-blue-700 border-blue-300'
+      };
+      
+      const messageEl = document.createElement('div');
+      messageEl.className = `fixed top-20 right-4 left-4 sm:left-auto sm:w-96 px-4 py-3 rounded-xl text-sm border-2 ${colors[type]} z-50 animate-slideInRight shadow-lg`;
+      messageEl.textContent = message;
+      
+      document.body.appendChild(messageEl);
+      
+      setTimeout(() => {
+        messageEl.style.opacity = '0';
+        messageEl.style.transform = 'translateX(100%)';
+        messageEl.style.transition = 'all 0.3s ease';
+        setTimeout(() => messageEl.remove(), 300);
+      }, 3000);
+    }
+    
+    // Logout handlers
+    function showLogoutConfirm() {
+      document.getElementById('logoutModal').classList.remove('hidden');
+    }
+    
+    function hideLogoutConfirm() {
+      document.getElementById('logoutModal').classList.add('hidden');
+    }
+    
+    function handleLogout() {
+      hideLogoutConfirm();
+      currentUser = null;
+      allData = [];
+      filteredData = [];
+      
+      document.getElementById('mainApp').classList.add('hidden');
+      document.getElementById('loginPage').classList.remove('hidden');
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('loginMessage').classList.add('hidden');
+      document.getElementById('loginBtn').disabled = false;
+      document.getElementById('loginBtn').innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg><span>Masuk</span>';
+    }
+    
+    // Apply config
+    function applyConfig() {
+      const loginTitle = document.getElementById('loginTitle');
+      const headerTitle = document.getElementById('headerTitle');
+      const loginFooter = document.getElementById('loginFooter');
+      
+      if (loginTitle) loginTitle.textContent = config.app_title;
+      if (headerTitle) headerTitle.textContent = config.app_title;
+      if (loginFooter) loginFooter.textContent = config.footer_text;
+    }
+    
+    // Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (newConfig) => {
+          config = { ...defaultConfig, ...newConfig };
+          applyConfig();
+        },
+        mapToCapabilities: (cfg) => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ['app_title', cfg.app_title || defaultConfig.app_title],
+          ['footer_text', cfg.footer_text || defaultConfig.footer_text]
+        ])
+      });
+    }
+    
+    // Initialize
+    applyConfig();
+    
+    // Enter key handler for login
+    document.getElementById('password').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleLogin();
+    });
+    document.getElementById('username').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') document.getElementById('password').focus();
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c185e2395656d16',t:'MTc2OTAxNDgyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
