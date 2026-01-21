@@ -8,7 +8,8 @@
   <script src="/_sdk/element_sdk.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script><!-- PWA Icons & Meta Tags -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script><!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json"><!-- PWA Icons & Meta Tags -->
   <link rel="icon" type="image/png" href="https://iili.io/fgp6BQj.png">
   <link rel="apple-touch-icon" href="https://iili.io/fgp6BQj.png">
   <link rel="apple-touch-icon" sizes="152x152" href="https://iili.io/fgp6BQj.png">
@@ -91,12 +92,45 @@
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
+    
+    /* PWA Install Prompt */
+    .install-prompt {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 100%);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(30, 58, 95, 0.4);
+      z-index: 1000;
+      max-width: 90%;
+      animation: slideInUp 0.5s ease-out;
+    }
+    
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translate(-50%, 100px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
  <body class="h-full font-body bg-gradient-to-br from-slate-50 to-blue-50">
-  <div id="app" class="h-full w-full overflow-auto"><!-- Login Page -->
+  <div id="app" class="h-full w-full overflow-auto"><!-- PWA Install Prompt -->
+   <div id="installPrompt" class="hidden install-prompt">
+    <div class="flex items-center gap-3">
+     <svg class="w-8 h-8 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+     </svg>
+     <div class="flex-1">
+      <p class="font-semibold text-sm">Install E-Jurnal Desa</p>
+      <p class="text-xs text-blue-200">Akses lebih cepat seperti aplikasi native!</p>
+     </div><button onclick="installPWA()" class="bg-white text-[#1e3a5f] px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-50 transition-all"> Install </button> <button onclick="dismissInstallPrompt()" class="text-white/70 hover:text-white p-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
+    </div>
+   </div><!-- Login Page -->
    <div id="loginPage" class="min-h-full w-full flex items-center justify-center p-4">
     <div class="w-full max-w-md">
      <div class="glass-effect rounded-2xl card-shadow p-8 animate-fadeInUp">
@@ -341,6 +375,62 @@
    </div>
   </div>
   <script>
+    // PWA Install Prompt
+    let deferredPrompt;
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      
+      // Show install prompt after 3 seconds
+      setTimeout(() => {
+        const installPrompt = document.getElementById('installPrompt');
+        if (installPrompt) {
+          installPrompt.classList.remove('hidden');
+        }
+      }, 3000);
+    });
+    
+    function installPWA() {
+      const installPrompt = document.getElementById('installPrompt');
+      if (installPrompt) {
+        installPrompt.classList.add('hidden');
+      }
+      
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('PWA installed');
+          }
+          deferredPrompt = null;
+        });
+      }
+    }
+    
+    function dismissInstallPrompt() {
+      const installPrompt = document.getElementById('installPrompt');
+      if (installPrompt) {
+        installPrompt.style.animation = 'slideOutDown 0.3s ease-out';
+        setTimeout(() => {
+          installPrompt.classList.add('hidden');
+        }, 300);
+      }
+    }
+    
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => {
+            console.log('Service Worker registered:', registration);
+          })
+          .catch(error => {
+            console.log('Service Worker registration failed:', error);
+          });
+      });
+    }
+    
     // Config
     const defaultConfig = {
       app_title: 'E-JURNAL DESA KENDAL',
@@ -1324,5 +1414,5 @@
       if (e.key === 'Enter') document.getElementById('password').focus();
     });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c185e2395656d16',t:'MTc2OTAxNDgyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c18961f5048ea87',t:'MTc2OTAxNzExOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
